@@ -1,0 +1,17 @@
+<section class="mx-10">
+    <h1 class="text-3xl">Nombre: {{ country().name }} </h1>
+
+    <country-stats [capital]="country().capital" [poblacion]="country().population" />
+</section>
+
+<section class="diff aspect-[16/9]">
+    <div class="diff-item-1">
+      <img [alt]="country().name" [src]="country().flagSvg"/>
+    </div>
+    <div class="diff-item-2" role="img" tabindex="0">
+      <img class="blur brightness-75"
+        [alt]="country().name"
+        [src]="country().flagSvg" />
+    </div>
+    <div class="diff-resizer"></div>
+  </section>
