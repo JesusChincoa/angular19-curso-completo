@@ -1,0 +1,113 @@
+<section class="text-center">
+
+<img src="https://m.media-amazon.com/images/I/91PlfTfI-nL._AC_UF1000,1000_QL80_.jpg" style="size:300px; height:300px;" alt="">
+
+<section class="d-flex justify-content-center flex-row gap-2 mt-2 mx-2 my-2" >
+    <input type="text"
+        class="input input-bordered mr-2 w-56"
+        placeholder="Nombre:"
+        (keyup.enter)="onSearch(txtSearch.value)"
+        #txtSearch>
+    <button type="button" class="btn btn-primary" (click)="onSearch(txtSearch.value)">Buscar</button>
+</section>
+
+
+<section class="d-flex justify-content-center flex-wrap-1 my-2 mx-2">
+  <div class="row g-2 justify-content-center text-center">
+    <div class="col-auto"><button (click)="onPokemonList(1025)" class="btn btn-dark">Todos</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('normal')" class="btn" style="background-color: #A8A77A;">Normal</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('fire')" class="btn" style="background-color: #EE8130;">Fuego</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('water')" class="btn" style="background-color: #6390F0;">Agua</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('electric')" class="btn" style="background-color: #F7D02C;">Eléctrico</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('grass')" class="btn" style="background-color: #7AC74C;">Planta</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('ice')" class="btn" style="background-color: #96D9D6;">Hielo</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('fighting')" class="btn" style="background-color: #C22E28;">Lucha</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('poison')" class="btn" style="background-color: #A33EA1;">Veneno</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('ground')" class="btn" style="background-color: #E2BF65;">Tierra</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('flying')" class="btn" style="background-color: #A98FF3;">Volador</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('psychic')" class="btn" style="background-color: #F95587;">Psíquico</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('bug')" class="btn" style="background-color: #A6B91A;">Bicho</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('rock')" class="btn" style="background-color: #B6A136;">Roca</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('ghost')" class="btn" style="background-color: #735797;">Fantasma</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('dragon')" class="btn" style="background-color: #6F35FC;">Dragón</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('dark')" class="btn" style="background-color: #705746;">Siniestro</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('steel')" class="btn" style="background-color: #B7B7CE;">Acero</button></div>
+    <div class="col-auto"><button (click)="onTypeSearch('fairy')" class="btn" style="background-color: #D685AD;">Hada</button></div>
+    <div class="col-auto"><button (click)="shinySprite.set(!shinySprite())" class="btn btn-warning">Shiny</button></div>
+    <div class="col-auto"><button (click)="onLegendarySearch()" class="btn" style="background-color: #08c916; color: #fff;">Legendarios</button></div>
+    <div class="col-auto"><button (click)="onMythicalSearch()" class="btn" style="background-color: #6a5acd; color: #fff;">Míticos</button></div>
+  </div>
+
+
+
+</section>
+
+<section class="d-flex justify-content-center flex-col relative w-screen" [ngStyle]="{'background-color': currentTypeColor}">
+    @if (searchedPokemon() != null) {
+        <div class="card" style="width: 18rem;">
+            @if (!shinySprite()) {
+                <img [src]="searchedPokemon()!.sprites.front_default" class="card-img-top" alt="...">
+            }
+            @else {
+                <img [src]="searchedPokemon()!.sprites.front_shiny" class="card-img-top" alt="...">
+            }
+            <div class="card-body">
+              <h5 class="card-title">{{ searchedPokemon()?.name | titlecase }}</h5>
+              <hr>
+              <h5 class="font-bold">Tipos</h5>
+                @for (type of searchedPokemon()?.types; track type.slot) {
+                    <p class="container card-text">{{type.type.name | titlecase}}</p>      
+                }
+                <hr>
+                <h5 class="font-bold">Stats</h5>
+                @for (stat of searchedPokemon()?.stats; track $index) {
+                    <p class="card-text">{{stat.stat.name | titlecase}}: {{stat.base_stat}}</p>      
+                }   
+            </div>
+          </div>
+        }
+
+</section>
+
+<section [ngStyle]="{'background-color': currentTypeColor}">
+    <div class="container">
+      <div class="row">
+        @if (pokemonList() != null) {
+          @for (pokemon of pokemonList(); track pokemon.id) {
+            <div class="col-md-3 mb-3">
+              <div class="card" style="width: 18rem;">
+                @if (!shinySprite()) {
+                  <img [src]="pokemon!.sprites.front_default" class="card-img-top" alt="...">
+                }
+                @else {
+                  <img [src]="pokemon!.sprites.front_shiny" class="card-img-top" alt="...">
+                }
+                <div class="card-body">
+                  <h5 class="card-title">{{ pokemon?.name | titlecase }}</h5>
+                  <hr>
+                  <h5 class="font-bold">Tipos</h5>
+                  @for (type of pokemon?.types; track type.slot) {
+                    <p class="card-text">{{ type.type.name | titlecase }}</p>      
+                  }
+                  <hr>
+                  <h5 class="font-bold">Stats</h5>
+                  @for (stat of pokemon?.stats; track $index) {
+                    <p class="card-text">{{ stat.stat.name | titlecase }}: {{ stat.base_stat }}</p>      
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="justify-content-center">
+    @if(pokemonList() == null && searchedPokemon() == null){
+      <h1 class="text-size-xl font-bold">No se han encontrado Pokemon con esas características</h1>
+    }
+  </section>
+
+</section>
+    
