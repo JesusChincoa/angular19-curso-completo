@@ -1,0 +1,16 @@
+<h1>Bola de Drac</h1>
+<hr />
+
+<section class ="row">
+    <div class="col-12 col-sm-6">
+    <dragonball-add-character (newCharacter)="dragonballService.addCharacter($event)" />
+
+    </div>
+
+    <div class = "col-12 col-sm-6">
+        <dragonball-character-list 
+            listName="Listado de personajes"
+            [characters]="dragonballService.characters()" /> 
+
+    </div>
+</section>

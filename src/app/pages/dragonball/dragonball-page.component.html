@@ -1,0 +1,34 @@
+<h1>Bola de Drac</h1>
+<hr />
+
+<section class ="row">
+    <div class="col-12 col-sm-6">
+    <h3>Agregar: {{name()}}</h3>
+    <input type="text" class="form-control" placeholder="Nombre" [value] = "name()" (input)="name.set(txtName.value)" #txtName>
+    <h3> {{power()}} </h3>
+    <input type="number" class="form-control mt-2" placeholder="Poder" [value] = "power()" (input)="power.set(+txtPower.value)" #txtPower>
+    <button (click)="addCharacter()" class = "btn btn-primary mt-2">
+        Agregar
+    </button>
+    </div>
+
+    <div class = "col-12 col-sm-6">
+        <h3>Listado</h3>
+        <ul>
+            @for (character of characters(); track character.id; let idx = $index) {
+                @if(character.power > 500) {
+                <li>
+                   <span>{{idx + 1}} - {{character.name}}</span>
+                    <strong 
+                    [class.text-danger] ="character.power > 9000"
+                    [class.text-primary] = "character.power < 9000">
+                    <!-- [NgClass] = "powerClasses()"> -->
+                        ({{character.power}})</strong>
+                </li>
+            } @else {
+                <li><strong>Este es un mataillo del quince</strong></li>
+            }
+            }
+        </ul>
+    </div>
+</section>
