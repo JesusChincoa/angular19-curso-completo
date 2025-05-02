@@ -1,0 +1,9 @@
+<div>
+    <h1 class=" text-2xl font-bold">Palabras:</h1>
+    @for (palabra of palabras(); track $index) {
+        <h2
+        [class.line-through]="sopaService.palabrasEncontradas.has(palabra)"
+        [class.text-green-600]="sopaService.palabrasEncontradas.has(palabra)">
+        {{palabra}}</h2>
+    }
+</div>
