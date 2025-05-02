@@ -1,4 +1,4 @@
-<div (mouseup)="sopaService.isMouseDown = false" class="flex justify-center align-middle overflow-auto" >
+<div (mouseup)="sopaService.isMouseDown = false" class="flex justify-center align-middle overflow-auto w-full h-full" >
     <table (mouseleave)="sopaService.isMouseDown = false" class=" border-collapse">
         @for (fila of sopaService.grid; let i = $index; track i) {
             <tr >

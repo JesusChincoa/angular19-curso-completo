@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ListGrande } from '../listaPalabras';
 
 type Celda = {
   letra: string;
@@ -9,9 +10,10 @@ type Celda = {
 @Injectable({
   providedIn: 'root'
 })
-export class SopaLetrasService {
-
-  palabras = ['betis','ALCACHOFA','TOLFIN', 'ISCO', 'ALBONDIGA'].map((palabra) => palabra.toUpperCase())
+export class SopaLetrasService 
+{
+  listaPalabras = ListGrande
+  palabras:string[] = []
 
   gridSize: number = 25;
   grid: Celda[][] = [];
@@ -25,6 +27,12 @@ export class SopaLetrasService {
     this.grid = Array.from({ length: this.gridSize }, () =>
       Array.from({ length: this.gridSize }, () => ({ letra: '', seleccionado: false , encontrada: false}))
     );
+
+    //Selecciono palabras
+    for (let i = 0; i < 10; i++) {
+      const index = Math.floor(Math.random() * this.listaPalabras.length);
+      this.palabras.push(this.listaPalabras.splice(index, 1)[0]);
+    }
 
     // Inserta palabras en la sopa
     for (const palabra of this.palabras){
