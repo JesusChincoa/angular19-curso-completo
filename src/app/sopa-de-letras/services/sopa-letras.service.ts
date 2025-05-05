@@ -19,7 +19,7 @@ export class SopaLetrasService
   grid: Celda[][] = [];
   seleccionActual: { fila: number; col: number }[] = [];
   palabrasEncontradas: Set<string> = new Set();
-  isMouseDown: boolean = false;
+  ultimaCelda: Celda = {letra: '', seleccionado:  false, encontrada: false}
 
   //Metodo para el OnInit
   generarSopaLetras(): void {
@@ -99,7 +99,9 @@ export class SopaLetrasService
       const letraActual = this.grid[f][c].letra;
 
       //Si la celda no es vacía o la misma letra que tenemos que colocar, deja de intentar colocar la palabra
-      if (letraActual !== '' && letraActual !== palabra[i]) {
+      //UPDATE: Como al marcar una palabra fijamos las letras que la forman, en esta implementación una letra no puede pertenecer a dos palabras.
+      //por lo tanto borramos esa condicion del if
+      if (letraActual !== '') {
         return false;
       }
     }
@@ -116,6 +118,7 @@ export class SopaLetrasService
   
     if (celda.seleccionado) {
       this.seleccionActual.push({ fila, col });
+      this.comprobarPosicion()
     } else {
       // Si se deselecciona, eliminarla del array
       this.seleccionActual = this.seleccionActual.filter(
@@ -124,6 +127,29 @@ export class SopaLetrasService
     }
   
     this.verificarSeleccion();
+  }
+
+  comprobarPosicion(): void{
+    //Si es la primera letra que se añade, no se comprueba nada ya que se puede elegir cualquier letra del tablero
+    if(this.seleccionActual.length == 1){} 
+
+    else{
+      //Comprobamos las dos ultimas selecciones de letras
+      const ultimaPos = this.seleccionActual[this.seleccionActual.length - 1]
+      const penultimaPos = this.seleccionActual[this.seleccionActual.length - 2]
+      console.log('Ultima: ',ultimaPos.fila, ultimaPos.col, 'Penultima: ', penultimaPos.fila, penultimaPos.col)
+      //Si están a mas de una casilla en vertical o horizontal en ambas direcciones
+      if (((ultimaPos.col - penultimaPos.col > 1 || ultimaPos.col - penultimaPos.col < -1)) || (ultimaPos.fila - penultimaPos.fila > 1  || ultimaPos.fila - penultimaPos.fila < -1)){
+        //Deseleccionamos todas las casillas que estuvieran seleccionadas
+        for(let i  = 0; i < this.seleccionActual.length - 1; i++){
+          this.grid[this.seleccionActual[i].fila][this.seleccionActual[i].col].seleccionado = false
+        }
+        //Borramos todas las selecciones de formar palabra menos la ultima
+        this.seleccionActual = []
+        this.seleccionActual.push(ultimaPos)
+      }
+
+    }
   }
 
   verificarSeleccion(): void {
@@ -143,32 +169,6 @@ export class SopaLetrasService
       this.palabrasEncontradas.add(palabraFormada); //Se guarda la palabra encontrada en el set para marcarla en la lista como encontrada
       this.seleccionActual = []; // Vaciar selección actual
     }
-  }
-
-  //Si el click esta pulsado, se añaden las celdas
-  onMouseDown(fila: number, col: number): void {
-    this.isMouseDown = true;
-    this.toggleSeleccion(fila, col);
-  }
-  
-  //Si el click esta pulsado y entro en otra celda, se selecciona
-  onMouseEnter(fila: number, col: number): void {
-    if (this.isMouseDown) {
-      this.toggleSeleccion(fila, col);
-    }
-  }
-  
-  //Metodo para agregar las celdas arrastrando, y verificar la palabra nada mas completarla
-  agregarCeldaSeleccionada(fila: number, col: number): void {
-    const celda = this.grid[fila][col];
-  
-    if (celda.encontrada || celda.seleccionado) return;
-  
-    celda.seleccionado = true;
-    this.seleccionActual.push({ fila, col });
-
-    this.verificarSeleccion()
-  
   }
   
 }

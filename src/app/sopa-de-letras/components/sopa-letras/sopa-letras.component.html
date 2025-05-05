@@ -1,5 +1,5 @@
-<div (mouseup)="sopaService.isMouseDown = false" class="flex justify-center align-middle overflow-auto w-full h-full" >
-    <table (mouseleave)="sopaService.isMouseDown = false" class=" border-collapse">
+<div class="flex justify-center align-middle overflow-auto w-full h-full" >
+    <table class=" border-collapse">
         @for (fila of sopaService.grid; let i = $index; track i) {
             <tr >
                 @for (celda of fila; let j =  $index; track j) {
@@ -9,8 +9,6 @@
                         'bg-green-500 font-extrabold': celda.encontrada,
                         'bg-white': !celda.seleccionado && !celda.encontrada
                       }"
-                    (mousedown)="sopaService.onMouseDown(i, j)"
-                    (mouseenter)="sopaService.onMouseEnter(i, j)"
                       class="w-6 h-6 border-solid border-1 text-center font-normal cursor-pointer">
                         {{ celda.letra }}
                     </td>
